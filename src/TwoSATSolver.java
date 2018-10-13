@@ -59,32 +59,48 @@ public class TwoSATSolver {
 	static Map<Integer, Boolean> solutionMap = new HashMap<>();
 
 	public static void main(String[] args){
+		final String filetype = "cnf";
+		String input;
 		System.out.print("Input File: ");
-		Scanner scan = new Scanner(System.in);
-		String input = scan.next();
-		CNFReader reader = new CNFReader(input);
-		System.out.println("[+] cnf file loaded. . .");
-		reader.generate();
-		System.out.println("[+] cnf file parsed. . .");
-		m = reader.getM();
-		if (m==0){
-			System.out.println("FORMULA SATISFIABLE");
-			System.out.println("Solution: Trivial (0 clauses)");
+		try{
+			Scanner scan = new Scanner(System.in);
+			input = scan.next();
+		} catch (Exception e){
+			System.err.println(e);
 			return;
 		}
-		n = reader.getN();
-		a = reader.getA();
-		b = reader.getB();
-		System.out.println("[+] SAT Solver initiated. . .");
-		long started = System.nanoTime();
-		solver(m,n,a,b);
-		long time = System.nanoTime();
-		long timeTaken = time - started;
-		System.out.println(" ");
-		System.out.println("[+] Time: " + timeTaken/1000000.0 + "ms");
+		if (!filetype.equals(input.substring(input.lastIndexOf(".") + 1, input.length()))){
+			System.err.println("[-] INVALID INPUT");
+			return;
+		}
+		try{
+			CNFReader reader = new CNFReader(input);
+			System.out.println("[+] cnf file loaded. . .");
+			reader.generate();
+			System.out.println("[+] cnf file parsed. . .");
+			m = reader.getM();
+			if (m==0){
+				System.out.println("FORMULA SATISFIABLE");
+				System.out.println("Solution: Trivial (0 clauses)");
+				return;
+			}
+			n = reader.getN();
+			a = reader.getA();
+			b = reader.getB();
+			System.out.println("[+] SAT Solver initiated. . .");
+			long started = System.nanoTime();
+			solve(m,n,a,b);
+			long time = System.nanoTime();
+			long timeTaken = time - started;
+			System.out.println(" ");
+			System.out.println("[+] Time: " + timeTaken/1000000.0 + "ms");
+		} catch (Exception e){
+			System.err.println("[-] FILE NOT FOUND");
+			return;
+		}
 	};
 
-	public static void solver(int m,int n,ArrayList<Integer> a,ArrayList<Integer> b){
+	public static void solve(int m,int n,ArrayList<Integer> a,ArrayList<Integer> b){
 		generateGraphs(m,n,a,b);
 
 		// first dfs traverse graph to create stack

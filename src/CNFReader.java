@@ -21,7 +21,6 @@ import java.lang.Exception;
 
 public class CNFReader{
 	String filename;
-	final String filetype = "cnf";
 	ArrayList<Integer> a = new ArrayList<Integer>();
 	ArrayList<Integer> b = new ArrayList<Integer>();
 	BufferedReader in;
@@ -29,43 +28,32 @@ public class CNFReader{
 	int m, n;
 
 	//Constructor for a new CNFReader object.
-	CNFReader(String filename){
-		if (!filetype.equals(filename.substring(filename.lastIndexOf(".") + 1, filename.length()))){
-			System.err.println("[-] INVALID INPUT");
-		} else {
-			try {
-				in = new BufferedReader(new FileReader(filename));
-			} catch (Exception ex) {
-				System.err.println(ex);
-			}
-		}
+	CNFReader(String filename) throws Exception{
+		in = new BufferedReader(new FileReader(filename));
 	}
 
 	//Method to parse the cnf file.
 	//Parses for m, the number of clauses, and n, the number of variables.
 	//Produces an list of nodes, a, that have edges to the respective nodes in list b. 
-	public void generate(){
-		try {
-				while ((s=in.readLine())!=null){
-					if (s.charAt(0) == 'c') {
-					} else if (s.charAt(0) == 'p') {
-						String[] items = s.split(" ");
-						try {
-							m = Integer.parseInt(items[items.length-1]);
-							n = Integer.parseInt(items[items.length-2]);
-						} catch (Exception ex) {
-							System.err.println(ex);
-						}
-					} else {
-						s = s.replace(" 0","");
-						String[] items = s.split(" ");
-						ArrayList<Integer> intList = new ArrayList<Integer>();
-						a.add(Integer.parseInt(items[0]));
-						b.add(Integer.parseInt(items[1]));
-					}
+	public void generate() throws Exception{
+		while ((s=in.readLine())!=null){
+			if (s.charAt(0) == 'c') {
+			} else if (s.charAt(0) == 'p') {
+				String[] items = s.split(" ");
+				m = Integer.parseInt(items[items.length-1]);
+				n = Integer.parseInt(items[items.length-2]);
+			} else {
+				s = s.replace(" 0","");
+				String[] items = s.split(" ");
+				ArrayList<Integer> intList = new ArrayList<Integer>();
+				if (items.length > 1){
+					a.add(Integer.parseInt(items[0]));
+					b.add(Integer.parseInt(items[1]));
+				} else if (items.length == 1){
+					a.add(Integer.parseInt(items[0]));
+					b.add(Integer.parseInt(items[0]));
 				}
-			} catch (Exception ex) {
-				System.err.println(ex);
+			}
 		}
 	}
 
