@@ -35,6 +35,6 @@ If edge(X,-X) and edge(-X,X) both exist, it is an unfeasible assignment.
 Therefore, the formula is unsatisfiable if X and -X exists in the same Strongly Connected Component (SCC)
 
 # Resources
-https://www.geeksforgeeks.org/strongly-connected-components/
-https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
+https://www.geeksforgeeks.org/strongly-connected-components/  
+https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm  
 http://www.geeksforgeeks.org/2-satisfiability-2-sat-problem/
